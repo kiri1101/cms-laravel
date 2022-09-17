@@ -92,62 +92,106 @@
                     </div>
                 </div>
             </div>
+            @if (isset($xver))
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0">{{__('Compliance')}}</h3>
+                        </div>                    
+                        <div class="card-body">
+                            <p>{{__('Trading Name')}}: {{$xver->trading_name}}</p>
+                            <p>{{__('Description')}}: {{$xver->description}}</p>
+                            <p>{{__('Staff Size')}}: {{$xver->staff_size}}</p>
+                            <p>{{__('Industry')}}: {{$xver->industry}}</p>
+                            <p>{{__('Category')}}: {{$xver->category}}</p>
+                            <p>{{__('Phone')}}: {{$xver->phone}}</p>
+                            <p>{{__('Address')}}: {{$xver->address}}</p>
+                            <p>{{__('Email')}}: {{$xver->email}}</p>
+                            <p>{{__('Website')}}: {{$xver->website}}</p>
+                            <p>{{__('Gender')}}: {{$xver->gender}}</p>
+                            <p>{{__('Business Type')}}: {{$xver->business_type}}</p>
+                            <a href="{{url('/')}}/asset/profile/{{$xver->paddress}}">{{__('View proof of Address')}}</a><br><br>
+                            @if($xver->business_type=="Registered Business")
+                                <p>{{__('Legal name')}}: {{$xver->legal_name}}</p>
+                                <p>{{__('Registration type')}}: {{$xver->registration_type}}</p>
+                                <p>{{__('Tax id')}}: {{$xver->tax_id}}</p>
+                                <p>{{__('Vat id')}}: {{$xver->vat_id}}</p>
+                                <p>{{__('Reg no')}}: {{$xver->reg_no}}</p>
+                                @if($xver->proof!=null)
+                                <a href="{{url('/')}}/asset/profile/{{$xver->proof}}">{{__('Proof of Registration [Front]')}}</a><br><br>
+                                <a href="{{url('/')}}/asset/profile/{{$xver->proof_back}}">{{__('Proof of Registration [Back]')}}</a><br><br>
+                                @endif
+                            @else
+                                <p>{{__('Full name')}}: {{$xver->first_name}}  {{$xver->last_name}}</p>
+                                <p>{{__('DOB')}}: {{$xver->day}}/{{$xver->month}}/{{$xver->year}}</p>
+                                <p>{{__('Nationality')}}: {{$xver->nationality}}</p>
+                                <p>{{__('ID Document')}}: {{$xver->id_type}}</p>
+                                @if($xver->idcard!=null)
+                                <a href="{{url('/')}}/asset/profile/{{$xver->idcard}}">{{__('View ID Document [Front]')}}</a><br><br>
+                                <a href="{{url('/')}}/asset/profile/{{$xver->idcard_back}}">{{__('View ID Document [Back]')}}</a><br><br>
+                                @endif
+                            @endif
+                            @if($xver->status==1)
+                                <a class="btn btn-sm btn-neutral" href="{{url('/')}}/admin/approve-kyc/{{$xver->id}}">{{__('Approve')}}</a>
+                                <a class="btn btn-sm btn-neutral" href="{{url('/')}}/admin/reject-kyc/{{$xver->id}}">{{__('Reject')}}</a>
+                            @endif
+                            <br><br>
+                            @if($client->business_level==1)
+                                <span class="badge badge-pill badge-danger">Business Level: Unverified</span>
+                            @elseif($client->business_level==2)
+                                <span class="badge badge-pill badge-primary">Business Level: Starter</span>                            
+                            @elseif($client->business_level==3)
+                                <span class="badge badge-pill badge-primary">Business Level: Registered</span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div class="card-img-actions d-inline-block mb-3">
+                                <img class="img-fluid rounded-circle" src="{{url('/')}}/asset/profile/{{$client->image}}" width="120" height="120" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-sm-flex align-item-sm-center flex-sm-nowrap">
+                                <div>
+                                    <ul class="list list-unstyled mb-0">
+                                        <li><span class="text-sm">{{__('Joined:')}} {{date("Y/m/d h:i:A", strtotime($client->created_at))}}</span></li>
+                                        <li><span class="text-sm">{{__('Last Login:')}} {{date("Y/m/d h:i:A", strtotime($client->last_login))}}</span></li>
+                                        <li><span class="text-sm">{{__('Last Updated:')}} {{date("Y/m/d h:i:A", strtotime($client->updated_at))}}</span></li>
+                                        <li><span class="text-sm">{{__('IP Address:')}} {{$client->ip_address}}</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+            @else
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="mb-0">{{__('Compliance')}}</h3>
                     </div>                    
                     <div class="card-body">
-                        <p>{{__('Trading Name')}}: {{$xver->trading_name}}</p>
-                        <p>{{__('Description')}}: {{$xver->description}}</p>
-                        <p>{{__('Staff Size')}}: {{$xver->staff_size}}</p>
-                        <p>{{__('Industry')}}: {{$xver->industry}}</p>
-                        <p>{{__('Category')}}: {{$xver->category}}</p>
-                        <p>{{__('Phone')}}: {{$xver->phone}}</p>
-                        <p>{{__('Address')}}: {{$xver->address}}</p>
-                        <p>{{__('Email')}}: {{$xver->email}}</p>
-                        <p>{{__('Website')}}: {{$xver->website}}</p>
-                        <p>{{__('Gender')}}: {{$xver->gender}}</p>
-                        <p>{{__('Business Type')}}: {{$xver->business_type}}</p>
-                        <a href="{{url('/')}}/asset/profile/{{$xver->paddress}}">{{__('View proof of Address')}}</a><br><br>
-                        @if($xver->business_type=="Registered Business")
-                            <p>{{__('Legal name')}}: {{$xver->legal_name}}</p>
-                            <p>{{__('Registration type')}}: {{$xver->registration_type}}</p>
-                            <p>{{__('Tax id')}}: {{$xver->tax_id}}</p>
-                            <p>{{__('Vat id')}}: {{$xver->vat_id}}</p>
-                            <p>{{__('Reg no')}}: {{$xver->reg_no}}</p>
-                            @if($xver->proof!=null)
-                            <a href="{{url('/')}}/asset/profile/{{$xver->proof}}">{{__('Proof of Registration [Front]')}}</a><br><br>
-                            <a href="{{url('/')}}/asset/profile/{{$xver->proof_back}}">{{__('Proof of Registration [Back]')}}</a><br><br>
-                            @endif
-                        @else
-                            <p>{{__('Full name')}}: {{$xver->first_name}}  {{$xver->last_name}}</p>
-                            <p>{{__('DOB')}}: {{$xver->day}}/{{$xver->month}}/{{$xver->year}}</p>
-                            <p>{{__('Nationality')}}: {{$xver->nationality}}</p>
-                            <p>{{__('ID Document')}}: {{$xver->id_type}}</p>
-                            @if($xver->idcard!=null)
-                            <a href="{{url('/')}}/asset/profile/{{$xver->idcard}}">{{__('View ID Document [Front]')}}</a><br><br>
-                            <a href="{{url('/')}}/asset/profile/{{$xver->idcard_back}}">{{__('View ID Document [Back]')}}</a><br><br>
-                            @endif
-                        @endif
-                        @if($xver->status==1)
-                            <a class="btn btn-sm btn-neutral" href="{{url('/')}}/admin/approve-kyc/{{$xver->id}}">{{__('Approve')}}</a>
-                            <a class="btn btn-sm btn-neutral" href="{{url('/')}}/admin/reject-kyc/{{$xver->id}}">{{__('Reject')}}</a>
-                        @endif
-                        <br><br>
-                        @if($client->business_level==1)
-                            <span class="badge badge-pill badge-danger">Business Level: Unverified</span>
-                        @elseif($client->business_level==2)
-                            <span class="badge badge-pill badge-primary">Business Level: Starter</span>                            
-                        @elseif($client->business_level==3)
-                            <span class="badge badge-pill badge-primary">Business Level: Registered</span>
-                        @endif
+                        <p>{{__('Trading Name')}}: </p>
+                        <p>{{__('Description')}}: </p>
+                        <p>{{__('Staff Size')}}: </p>
+                        <p>{{__('Industry')}}: </p>
+                        <p>{{__('Category')}}: </p>
+                        <p>{{__('Phone')}}: </p>
+                        <p>{{__('Address')}}: </p>
+                        <p>{{__('Email')}}: </p>
+                        <p>{{__('Website')}}: </p>
+                        <p>{{__('Gender')}}: </p>
+                        <p>{{__('Business Type')}}: </p>
+                        {{-- <a href="#">{{__('View proof of Address')}}</a><br><br> --}}
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-body text-center">
                         <div class="card-img-actions d-inline-block mb-3">
-                            <img class="img-fluid rounded-circle" src="{{url('/')}}/asset/profile/{{$client->image}}" width="120" height="120" alt="">
+                            <img class="img-fluid rounded-circle" src="#" width="120" height="120" alt="">
                         </div>
                     </div>
                 </div>
@@ -166,6 +210,7 @@
                     </div>
                 </div>  
             </div>
+            @endif
         </div>
         <div class="row">
             <div class="col-md-12">

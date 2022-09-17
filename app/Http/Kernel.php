@@ -70,5 +70,6 @@ class Kernel extends HttpKernel
         'Kyc' => \App\Http\Middleware\Kyc::class,
         'Ban' => \App\Http\Middleware\Ban::class,
         'Country' => \App\Http\Middleware\Country::class,
+        'Partner' => \App\Http\Middleware\IsPartner::class,
     ];
 }

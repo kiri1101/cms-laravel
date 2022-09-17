@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -34,12 +35,28 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function branch()
+    {
+        return $this->belongsToMany(Branch::class, 'agents')->withTimestamps();
+    }
+
     public function deposit()
     {
         return $this->hasMany('App\Model\Deposit', 'user_id');
+    }   
+
+    public static function agentList()
+    {
+        return Self::wheretype('2')->get();
     }
 
-    
+    public function compliance()
+    {
+        return $this->hasOne(Compliance::class);
+    }
 
-
+    public function paymentLink()
+    {
+        return $this->hasMany(PaymentLink::class);
+    }
 }

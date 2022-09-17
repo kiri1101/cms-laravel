@@ -31,11 +31,11 @@
             @foreach($links as $k=>$val)
               <tr>
                 <td>{{++$k}}.</td>
-                <td>@if($val->user['business_name']==null) [Deleted] @else {{$val->user['business_name']}} @endif</td>
+                <td>@if(\App\Models\PaymentLink::find($val->id)->user['business_name']==null) [Deleted] @else {{\App\Models\PaymentLink::find($val->id)->user['business_name']}} @endif</td>
                 <td>{{$val->name}}</td>
                 <td>@if($val->amount==null) Not fixed @else {{$currency->symbol.number_format($val->amount, 2, '.', '')}} @endif</td>
                 <td>#{{$val->ref_id}}</td>
-                <td>@if($val->redirect_link==null) null @else {{$$val->redirect_link}} @endif</td>
+                <td>@if($val->redirect_link==null) null @else {{$val->redirect_link}} @endif</td>
                 <td>
                     @if($val->active==1)
                         <span class="badge badge-pill badge-success">{{__('Active')}}</span>

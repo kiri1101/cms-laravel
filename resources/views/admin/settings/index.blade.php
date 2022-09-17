@@ -481,7 +481,766 @@
                                 </div>
                             </form>
                         </div>
-                    </div>                      
+                    </div> 
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>{{ __('Commissions') }}</h3>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ route('admin.commission.update') }}" method="POST">
+                                @csrf
+                                <div class="form-group row">
+                                    <div class="col-lg-3">
+                                        <div class="custom-control custom-control-alternative custom-checkbox">
+                                            @if($fee->mobile_transfer==1)
+                                                <input type="checkbox" name="mobile_transfer" id="customCommission2" class="custom-control-input" value="1" checked>
+                                            @else
+                                                <input type="checkbox" name="mobile_transfer" id="customCommission2"  class="custom-control-input" value="1">
+                                            @endif
+                                            <label class="custom-control-label" for="customCommission2">
+                                            <span class="text-muted">{{__('Mobile Transfer')}}</span>     
+                                            </label>
+                                        </div>                       
+                                        <div class="custom-control custom-control-alternative custom-checkbox">
+                                            @if($fee->partner_deposit==1)
+                                                <input type="checkbox" name="partner_deposit" id="customCommission3" class="custom-control-input" value="1" checked>
+                                            @else
+                                                <input type="checkbox" name="partner_deposit" id="customCommission3"  class="custom-control-input" value="1">
+                                            @endif
+                                            <label class="custom-control-label" for="customCommission3">
+                                            <span class="text-muted">{{__('Partner Deposit ')}}</span>     
+                                            </label>
+                                        </div>  
+                                        <div class="custom-control custom-control-alternative custom-checkbox">
+                                            @if($fee->partner_withdraw==1)
+                                                <input type="checkbox" name="partner_withdraw" id="customCommission4" class="custom-control-input" value="1" checked>
+                                            @else
+                                                <input type="checkbox" name="partner_withdraw"id="customCommission4"  class="custom-control-input" value="1">
+                                            @endif
+                                            <label class="custom-control-label" for="customCommission4">
+                                            <span class="text-muted">{{__('Partner Withdraw')}}</span>     
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label class="col-form-label">{{__('Start Amount')}} <span class="text-danger">*</span></label>           
+                                        <div class="input-group">
+                                            <input type="number" step="any"  name="start_amount" class="form-control" required>
+                                            <span class="input-group-append">
+                                                <select class="form-control select" name="currency" id="currency" data-fouc required>    
+                                                    <option value="base">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->base_code }}
+                                                        </span>
+                                                    </option>
+                                                    <option value="extra1">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra1_code }}
+                                                        </span>
+                                                    </option>                                   
+                                                    <option value="extra2">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra2_code }}
+                                                        </span>
+                                                    </option>                                
+                                                    <option value="extra3">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra3_code }}
+                                                        </span>
+                                                    </option>   
+                                                    <option value="extra4">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra4_code }}
+                                                        </span>
+                                                    </option>                    
+                                                    <option value="extra5">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra5_code }}
+                                                        </span>
+                                                    </option>                  
+                                                </select>
+                                            </span>
+                                        </div>
+                                    </div>                                        
+                                    <div class="col-lg-3">
+                                        <label class="col-form-label">{{__('End Amount')}} <span class="text-danger">*</span></label>                                   
+                                        <div class="input-group">
+                                            <input type="number" step="any"  name="end_amount" class="form-control" required>
+                                            <span class="input-group-append">
+                                                <select class="form-control select" name="currency_end" id="currency_end" data-fouc required>    
+                                                    <option value="base">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->base_code }}
+                                                        </span>
+                                                    </option>
+                                                    <option value="extra1">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra1_code }}
+                                                        </span>
+                                                    </option>                                   
+                                                    <option value="extra2">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra2_code }}
+                                                        </span>
+                                                    </option>                                
+                                                    <option value="extra3">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra3_code }}
+                                                        </span>
+                                                    </option>   
+                                                    <option value="extra4">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra4_code }}
+                                                        </span>
+                                                    </option>                    
+                                                    <option value="extra5">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra5_code }}
+                                                        </span>
+                                                    </option>                  
+                                                </select>
+                                            </span>
+                                        </div>                                
+                                    </div> 
+                                    <div class="col-lg-3">
+                                        <label class="col-form-label">{{__('Fee')}} <span class="text-danger">*</span></label>                                   
+                                        <div class="input-group">
+                                            <input type="number" step="any"  name="fee" class="form-control" required>
+                                            <span class="input-group-append">
+                                                <span class="input-group-text">%</span>
+                                            </span>
+                                        </div>                                
+                                    </div>    
+                                </div> 
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-success btn-sm">{{__('Save Changes')}}</button>
+                                </div>                                   
+                            </form>
+                        </div>
+                        <hr>
+                        <div>  
+                            <div class="border-bottom py-3">
+                                <div class="container flex">
+                                    <div class="row align-items-center flex justify-content-between">
+                                        <div class="col-md-9 col-lg-10">
+                                            <ul class="nav nav-underline border-0 justify-content-between justify-content-md-start">
+                                                <li class="nav-item mr-md-4"><a data-toggle="tab" class="text-graphite active" href="#mobile" aria-selected="true">{{ __('Mobile-Fee') }}</a>
+                                                </li>
+                                                <li class="nav-item mr-md-4"><a data-toggle="tab" class="text-graphite" href="#deposit" aria-selected="false">{{ __('Deposit-Fee') }}</a>
+                                                </li>
+                                                <li class="nav-item mr-md-4"><a data-toggle="tab" class="text-graphite" href="#withdraw" aria-selected="false">{{ __('Withdraw-Fee') }}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div><!-- container -->
+                            </div>
+                            <div class="container">
+                                <div class="tab-content mt-4">
+                                    <div id="mobile" class="tab-pane show active" role="tabpanel">
+                                        <h2 class="text-center p-3">{{ __('Mobile Transfer Fee') }}</h2>
+                                        <div class="row mt-6">
+                                            <div class="container-fluid mt--6">
+                                                <div class="content-wrapper">
+                                                    <div class="card">
+                                                        <div class="table-responsive py-4">
+                                                            <table class="table table-flush" id="datatable-buttons" aria-labelledby="Mobile transfer Table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>{{__('S/N')}}</th>
+                                                                        <th class="scope"></th>    
+                                                                        <th>{{__('Start Amount')}}</th>
+                                                                        <th>{{__('End Amount')}}</th>
+                                                                        <th>{{__('Fee')}}</th>                                                                      
+                                                                        <th>{{__('Currency')}}</th>
+                                                                        <th>{{__('Created')}}</th>
+                                                                        <th>{{__('Updated')}}</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                @foreach($mobile_fee as $k=>$val)
+                                                                    <tr>
+                                                                        <td>{{++$k}}.</td>
+                                                                        <td class="text-right">
+                                                                        <div class="dropdown">
+                                                                                <a class="text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                <em class="fad fa-chevron-circle-down"></em>
+                                                                                </a>
+                                                                                {{-- <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                                                                    <a href="{{route('partner.agent.manage', ['id' => $val->id])}}" class="dropdown-item">{{__('Manage Agent')}}</a>
+                                                                                    <a data-toggle="modal" data-target="#delete{{$val->id}}" href="" class="dropdown-item">{{__('Delete')}}</a>
+                                                                                </div> --}}
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>{{ $val->start_amount }}</td>
+                                                                        <td>{{ $val->end_amount }}</td>
+                                                                        <td>{{ $val->fee }}</td>
+                                                                        <td>{{ $val->currency }}</td>
+                                                                        <td>{{date("Y/m/d h:i:A", strtotime($val->created_at))}}</td>  
+                                                                        <td>{{date("Y/m/d h:i:A", strtotime($val->updated_at))}}</td>                   
+                                                                    </tr>
+                                                                    @endforeach               
+                                                                </tbody>                    
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    {{-- @foreach($agent as $k=>$val)
+                                                    <div class="modal fade" id="delete{{$val->id}}" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+                                                        <div class="modal-dialog modal- modal-dialog-centered modal-md" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body p-0">
+                                                                    <div class="card bg-white border-0 mb-0">
+                                                                        <div class="card-header">
+                                                                            <h3 class="mb-0">{{__('Are you sure you want to delete this?')}}</h3>
+                                                                        </div>
+                                                                        <div class="card-body px-lg-5 py-lg-5 text-right">
+                                                                            <button type="button" class="btn btn-neutral btn-sm" data-dismiss="modal">{{__('Close')}}</button>
+                                                                            <a  href="{{route('partner.agent.delete', ['id' => $val->id])}}" class="btn btn-danger btn-sm">{{__('Proceed')}}</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @endforeach  --}}
+                                                </div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    <div id="deposit" class="tab-pane fade text-center" role="tabpanel">
+                                        <h2 class="p-3">{{ __('Partner Deposit Fee') }}</h2>
+                                        <div class="row mt-6">
+                                            <div class="container-fluid mt--6">
+                                                <div class="content-wrapper">
+                                                    <div class="card">
+                                                        <div class="table-responsive py-4">
+                                                            <table class="table table-flush" id="datatable-buttons1" aria-labelledby="Mobile transfer Table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>{{__('S/N')}}</th>
+                                                                        <th class="scope"></th>    
+                                                                        <th>{{__('Start Amount')}}</th>
+                                                                        <th>{{__('End Amount')}}</th>
+                                                                        <th>{{__('Fee')}}</th>                                                                      
+                                                                        <th>{{__('Currency')}}</th>
+                                                                        <th>{{__('Created')}}</th>
+                                                                        <th>{{__('Updated')}}</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                @foreach($deposit_fee as $k=>$val)
+                                                                    <tr>
+                                                                        <td>{{++$k}}.</td>
+                                                                        <td class="text-right">
+                                                                        <div class="dropdown">
+                                                                                <a class="text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                <em class="fad fa-chevron-circle-down"></em>
+                                                                                </a>
+                                                                                {{-- <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                                                                    <a href="{{route('partner.agent.manage', ['id' => $val->id])}}" class="dropdown-item">{{__('Manage Agent')}}</a>
+                                                                                    <a data-toggle="modal" data-target="#delete{{$val->id}}" href="" class="dropdown-item">{{__('Delete')}}</a>
+                                                                                </div> --}}
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>{{ $val->start_amount }}</td>
+                                                                        <td>{{ $val->end_amount }}</td>
+                                                                        <td>{{ $val->fee }}</td>
+                                                                        <td>{{ $val->currency }}</td>
+                                                                        <td>{{date("Y/m/d h:i:A", strtotime($val->created_at))}}</td>  
+                                                                        <td>{{date("Y/m/d h:i:A", strtotime($val->updated_at))}}</td>                   
+                                                                    </tr>
+                                                                    @endforeach               
+                                                                </tbody>                    
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    {{-- @foreach($agent as $k=>$val)
+                                                    <div class="modal fade" id="delete{{$val->id}}" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+                                                        <div class="modal-dialog modal- modal-dialog-centered modal-md" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body p-0">
+                                                                    <div class="card bg-white border-0 mb-0">
+                                                                        <div class="card-header">
+                                                                            <h3 class="mb-0">{{__('Are you sure you want to delete this?')}}</h3>
+                                                                        </div>
+                                                                        <div class="card-body px-lg-5 py-lg-5 text-right">
+                                                                            <button type="button" class="btn btn-neutral btn-sm" data-dismiss="modal">{{__('Close')}}</button>
+                                                                            <a  href="{{route('partner.agent.delete', ['id' => $val->id])}}" class="btn btn-danger btn-sm">{{__('Proceed')}}</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @endforeach  --}}
+                                                </div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    <div id="withdraw" class="tab-pane fade text-center" role="tabpanel">
+                                        <h2 class="p-3">{{ __('Partner Withdraw Fee') }}</h2>
+                                        <div class="row mt-6">
+                                            <div class="container-fluid mt--6">
+                                                <div class="content-wrapper">
+                                                    <div class="card">
+                                                        <div class="table-responsive py-4">
+                                                            <table class="table table-flush" id="datatable-buttons2" aria-labelledby="Mobile transfer Table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>{{__('S/N')}}</th>
+                                                                        <th class="scope"></th>    
+                                                                        <th>{{__('Start Amount')}}</th>
+                                                                        <th>{{__('End Amount')}}</th>
+                                                                        <th>{{__('Fee')}}</th>                                                                      
+                                                                        <th>{{__('Currency')}}</th>
+                                                                        <th>{{__('Created')}}</th>
+                                                                        <th>{{__('Updated')}}</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                @foreach($deposit_fee as $k=>$val)
+                                                                    <tr>
+                                                                        <td>{{++$k}}.</td>
+                                                                        <td class="text-right">
+                                                                        <div class="dropdown">
+                                                                                <a class="text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                <em class="fad fa-chevron-circle-down"></em>
+                                                                                </a>
+                                                                                {{-- <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                                                                    <a href="{{route('partner.agent.manage', ['id' => $val->id])}}" class="dropdown-item">{{__('Manage Agent')}}</a>
+                                                                                    <a data-toggle="modal" data-target="#delete{{$val->id}}" href="" class="dropdown-item">{{__('Delete')}}</a>
+                                                                                </div> --}}
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>{{ $val->start_amount }}</td>
+                                                                        <td>{{ $val->end_amount }}</td>
+                                                                        <td>{{ $val->fee }}</td>
+                                                                        <td>{{ $val->currency }}</td>
+                                                                        <td>{{date("Y/m/d h:i:A", strtotime($val->created_at))}}</td>  
+                                                                        <td>{{date("Y/m/d h:i:A", strtotime($val->updated_at))}}</td>                   
+                                                                    </tr>
+                                                                    @endforeach               
+                                                                </tbody>                    
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    {{-- @foreach($agent as $k=>$val)
+                                                    <div class="modal fade" id="delete{{$val->id}}" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+                                                        <div class="modal-dialog modal- modal-dialog-centered modal-md" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body p-0">
+                                                                    <div class="card bg-white border-0 mb-0">
+                                                                        <div class="card-header">
+                                                                            <h3 class="mb-0">{{__('Are you sure you want to delete this?')}}</h3>
+                                                                        </div>
+                                                                        <div class="card-body px-lg-5 py-lg-5 text-right">
+                                                                            <button type="button" class="btn btn-neutral btn-sm" data-dismiss="modal">{{__('Close')}}</button>
+                                                                            <a  href="{{route('partner.agent.delete', ['id' => $val->id])}}" class="btn btn-danger btn-sm">{{__('Proceed')}}</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @endforeach  --}}
+                                                </div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div><!-- tab content -->
+                            </div><!-- container --> 
+                        </div>
+                    </div>  
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>{{ __('Savings') }}</h3>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ route('admin.commission.update') }}" method="POST">
+                                @csrf
+                                <div class="form-group row">
+                                    <div class="col-lg-3">
+                                        <div class="custom-control custom-control-alternative custom-checkbox">
+                                            @if($fee->month_saving==1)
+                                                <input type="checkbox" name="one_month_saving" id="monthSaving" class="custom-control-input" value="1" checked>
+                                            @else
+                                                <input type="checkbox" name="one_month_saving" id="monthSaving"  class="custom-control-input" value="1">
+                                            @endif
+                                            <label class="custom-control-label" for="monthSaving">
+                                            <span class="text-muted">{{__('Monthly Saving')}}</span>     
+                                            </label>
+                                        </div>                       
+                                        <div class="custom-control custom-control-alternative custom-checkbox">
+                                            @if($fee->three_months_saving==1)
+                                                <input type="checkbox" name="three_months_saving" id="threemonthSaving" class="custom-control-input" value="1" checked>
+                                            @else
+                                                <input type="checkbox" name="three_months_saving" id="threemonthSaving"  class="custom-control-input" value="1">
+                                            @endif
+                                            <label class="custom-control-label" for="threemonthSaving">
+                                            <span class="text-muted">{{__('Three Months Saving')}}</span>     
+                                            </label>
+                                        </div>  
+                                        <div class="custom-control custom-control-alternative custom-checkbox">
+                                            @if($fee->six_months_saving==1)
+                                                <input type="checkbox" name="six_months_saving" id="sixmonthSaving" class="custom-control-input" value="1" checked>
+                                            @else
+                                                <input type="checkbox" name="six_months_saving" id="sixmonthSaving"  class="custom-control-input" value="1">
+                                            @endif
+                                            <label class="custom-control-label" for="sixmonthSaving">
+                                            <span class="text-muted">{{__('Six Months Saving')}}</span>     
+                                            </label>
+                                        </div>
+                                        <div class="custom-control custom-control-alternative custom-checkbox">
+                                            @if($fee->personal_saving==1)
+                                                <input type="checkbox" name="personal_saving" id="personalSaving" class="custom-control-input" value="1" checked>
+                                            @else
+                                                <input type="checkbox" name="personal_saving" id="personalSaving"  class="custom-control-input" value="1">
+                                            @endif
+                                            <label class="custom-control-label" for="personalSaving">
+                                            <span class="text-muted">{{__('Personal Saving')}}</span>     
+                                            </label>
+                                        </div>
+                                        <div class="custom-control custom-control-alternative custom-checkbox">
+                                            @if($fee->general_saving==1)
+                                                <input type="checkbox" name="general_saving" id="generalSaving" class="custom-control-input" value="1" checked>
+                                            @else
+                                                <input type="checkbox" name="general_saving" id="generalSaving"  class="custom-control-input" value="1">
+                                            @endif
+                                            <label class="custom-control-label" for="generalSaving">
+                                            <span class="text-muted">{{__('General Saving')}}</span>     
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label class="col-form-label">{{__('Start Amount')}} <span class="text-danger">*</span></label>           
+                                        <div class="input-group">
+                                            <input type="number" step="any"  name="start_amount" class="form-control" required>
+                                            <span class="input-group-append">
+                                                <select class="form-control select" name="currency" id="currency" data-fouc required>    
+                                                    <option value="base">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->base_code }}
+                                                        </span>
+                                                    </option>
+                                                    <option value="extra1">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra1_code }}
+                                                        </span>
+                                                    </option>                                   
+                                                    <option value="extra2">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra2_code }}
+                                                        </span>
+                                                    </option>                                
+                                                    <option value="extra3">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra3_code }}
+                                                        </span>
+                                                    </option>   
+                                                    <option value="extra4">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra4_code }}
+                                                        </span>
+                                                    </option>                    
+                                                    <option value="extra5">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra5_code }}
+                                                        </span>
+                                                    </option>                  
+                                                </select>
+                                            </span>
+                                        </div>
+                                    </div>                                        
+                                    <div class="col-lg-3">
+                                        <label class="col-form-label">{{__('End Amount')}} <span class="text-danger">*</span></label>                                   
+                                        <div class="input-group">
+                                            <input type="number" step="any"  name="end_amount" class="form-control" required>
+                                            <span class="input-group-append">
+                                                <select class="form-control select" name="currency_end" id="currency" data-fouc required>    
+                                                    <option value="base">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->base_code }}
+                                                        </span>
+                                                    </option>
+                                                    <option value="extra1">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra1_code }}
+                                                        </span>
+                                                    </option>                                   
+                                                    <option value="extra2">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra2_code }}
+                                                        </span>
+                                                    </option>                                
+                                                    <option value="extra3">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra3_code }}
+                                                        </span>
+                                                    </option>   
+                                                    <option value="extra4">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra4_code }}
+                                                        </span>
+                                                    </option>                    
+                                                    <option value="extra5">
+                                                        <span class="input-group-text">
+                                                            {{ $currencys->extra5_code }}
+                                                        </span>
+                                                    </option>                  
+                                                </select>
+                                            </span>
+                                        </div>                                
+                                    </div> 
+                                    <div class="col-lg-3">
+                                        <label class="col-form-label">{{__('Fee')}} <span class="text-danger">*</span></label>                                   
+                                        <div class="input-group">
+                                            <input type="number" step="any"  name="fee" class="form-control" required>
+                                            <span class="input-group-append">
+                                                <span class="input-group-text">%</span>
+                                            </span>
+                                        </div>                                
+                                    </div>    
+                                </div> 
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-success btn-sm">{{__('Save Changes')}}</button>
+                                </div>                                   
+                            </form>
+                        </div>
+                        <hr>
+                        <div>  
+                            <div class="border-bottom py-3">
+                                <div class="container flex">
+                                    <div class="row align-items-center flex justify-content-between">
+                                        <div class="col-md-9 col-lg-10">
+                                            <ul class="nav nav-underline border-0 justify-content-between justify-content-md-start">
+                                                <li class="nav-item mr-md-4"><a data-toggle="tab" class="text-graphite active" href="#monthly_fee" aria-selected="true">{{ __('Monthly-Fee') }}</a>
+                                                </li>
+                                                <li class="nav-item mr-md-4"><a data-toggle="tab" class="text-graphite" href="#three_months_fee" aria-selected="false">{{ __('Three-Months-Fee') }}</a>
+                                                </li>
+                                                <li class="nav-item mr-md-4"><a data-toggle="tab" class="text-graphite" href="#six_months_fee" aria-selected="false">{{ __('Six-Months-Fee') }}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div><!-- container -->
+                            </div>
+                            <div class="container">
+                                <div class="tab-content mt-4">
+                                    <div id="monthly_fee" class="tab-pane show active" role="tabpanel">
+                                        <h2 class="text-center p-3">{{ __('Monthly Fee') }}</h2>
+                                        <div class="row mt-6">
+                                            <div class="container-fluid mt--6">
+                                                <div class="content-wrapper">
+                                                    <div class="card">
+                                                        <div class="table-responsive py-4">
+                                                            <table class="table table-flush" id="datatable-buttons3" aria-labelledby="Mobile transfer Table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>{{__('S/N')}}</th>
+                                                                        <th class="scope"></th>    
+                                                                        <th>{{__('Start Amount')}}</th>
+                                                                        <th>{{__('End Amount')}}</th>
+                                                                        <th>{{__('Fee')}}</th>                                                                      
+                                                                        <th>{{__('Currency')}}</th>
+                                                                        <th>{{__('Created')}}</th>
+                                                                        <th>{{__('Updated')}}</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                @foreach($monthly_fee as $k=>$val)
+                                                                    <tr>
+                                                                        <td>{{++$k}}.</td>
+                                                                        <td class="text-right">
+                                                                        <div class="dropdown">
+                                                                                <a class="text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                <em class="fad fa-chevron-circle-down"></em>
+                                                                                </a>
+                                                                                {{-- <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                                                                    <a href="{{route('partner.agent.manage', ['id' => $val->id])}}" class="dropdown-item">{{__('Manage Agent')}}</a>
+                                                                                    <a data-toggle="modal" data-target="#delete{{$val->id}}" href="" class="dropdown-item">{{__('Delete')}}</a>
+                                                                                </div> --}}
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>{{ $val->start_amount }}</td>
+                                                                        <td>{{ $val->end_amount }}</td>
+                                                                        <td>{{ $val->fee }}</td>
+                                                                        <td>{{ $val->currency }}</td>
+                                                                        <td>{{date("Y/m/d h:i:A", strtotime($val->created_at))}}</td>  
+                                                                        <td>{{date("Y/m/d h:i:A", strtotime($val->updated_at))}}</td>                   
+                                                                    </tr>
+                                                                    @endforeach               
+                                                                </tbody>                    
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    {{-- @foreach($agent as $k=>$val)
+                                                    <div class="modal fade" id="delete{{$val->id}}" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+                                                        <div class="modal-dialog modal- modal-dialog-centered modal-md" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body p-0">
+                                                                    <div class="card bg-white border-0 mb-0">
+                                                                        <div class="card-header">
+                                                                            <h3 class="mb-0">{{__('Are you sure you want to delete this?')}}</h3>
+                                                                        </div>
+                                                                        <div class="card-body px-lg-5 py-lg-5 text-right">
+                                                                            <button type="button" class="btn btn-neutral btn-sm" data-dismiss="modal">{{__('Close')}}</button>
+                                                                            <a  href="{{route('partner.agent.delete', ['id' => $val->id])}}" class="btn btn-danger btn-sm">{{__('Proceed')}}</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @endforeach  --}}
+                                                </div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    <div id="three_months_fee" class="tab-pane fade text-center" role="tabpanel">
+                                        <h2 class="p-3">{{ __('Three Months Fee') }}</h2>
+                                        <div class="row mt-6">
+                                            <div class="container-fluid mt--6">
+                                                <div class="content-wrapper">
+                                                    <div class="card">
+                                                        <div class="table-responsive py-4">
+                                                            <table class="table table-flush" id="datatable-buttons4" aria-labelledby="Mobile transfer Table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>{{__('S/N')}}</th>
+                                                                        <th class="scope"></th>    
+                                                                        <th>{{__('Start Amount')}}</th>
+                                                                        <th>{{__('End Amount')}}</th>
+                                                                        <th>{{__('Fee')}}</th>                                                                      
+                                                                        <th>{{__('Currency')}}</th>
+                                                                        <th>{{__('Created')}}</th>
+                                                                        <th>{{__('Updated')}}</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                @foreach($three_months_fee as $k=>$val)
+                                                                    <tr>
+                                                                        <td>{{++$k}}.</td>
+                                                                        <td class="text-right">
+                                                                        <div class="dropdown">
+                                                                                <a class="text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                <em class="fad fa-chevron-circle-down"></em>
+                                                                                </a>
+                                                                                {{-- <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                                                                    <a href="{{route('partner.agent.manage', ['id' => $val->id])}}" class="dropdown-item">{{__('Manage Agent')}}</a>
+                                                                                    <a data-toggle="modal" data-target="#delete{{$val->id}}" href="" class="dropdown-item">{{__('Delete')}}</a>
+                                                                                </div> --}}
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>{{ $val->start_amount }}</td>
+                                                                        <td>{{ $val->end_amount }}</td>
+                                                                        <td>{{ $val->fee }}</td>
+                                                                        <td>{{ $val->currency }}</td>
+                                                                        <td>{{date("Y/m/d h:i:A", strtotime($val->created_at))}}</td>  
+                                                                        <td>{{date("Y/m/d h:i:A", strtotime($val->updated_at))}}</td>                   
+                                                                    </tr>
+                                                                    @endforeach               
+                                                                </tbody>                    
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    {{-- @foreach($agent as $k=>$val)
+                                                    <div class="modal fade" id="delete{{$val->id}}" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+                                                        <div class="modal-dialog modal- modal-dialog-centered modal-md" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body p-0">
+                                                                    <div class="card bg-white border-0 mb-0">
+                                                                        <div class="card-header">
+                                                                            <h3 class="mb-0">{{__('Are you sure you want to delete this?')}}</h3>
+                                                                        </div>
+                                                                        <div class="card-body px-lg-5 py-lg-5 text-right">
+                                                                            <button type="button" class="btn btn-neutral btn-sm" data-dismiss="modal">{{__('Close')}}</button>
+                                                                            <a  href="{{route('partner.agent.delete', ['id' => $val->id])}}" class="btn btn-danger btn-sm">{{__('Proceed')}}</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @endforeach  --}}
+                                                </div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    <div id="six_months_fee" class="tab-pane fade text-center" role="tabpanel">
+                                        <h2 class="p-3">{{ __('Six Months Fee') }}</h2>
+                                        <div class="row mt-6">
+                                            <div class="container-fluid mt--6">
+                                                <div class="content-wrapper">
+                                                    <div class="card">
+                                                        <div class="table-responsive py-4">
+                                                            <table class="table table-flush" id="datatable-buttons5" aria-labelledby="Mobile transfer Table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>{{__('S/N')}}</th>
+                                                                        <th class="scope"></th>    
+                                                                        <th>{{__('Start Amount')}}</th>
+                                                                        <th>{{__('End Amount')}}</th>
+                                                                        <th>{{__('Fee')}}</th>                                                                      
+                                                                        <th>{{__('Currency')}}</th>
+                                                                        <th>{{__('Created')}}</th>
+                                                                        <th>{{__('Updated')}}</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                @foreach($six_months_fee as $k=>$val)
+                                                                    <tr>
+                                                                        <td>{{++$k}}.</td>
+                                                                        <td class="text-right">
+                                                                        <div class="dropdown">
+                                                                                <a class="text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                <em class="fad fa-chevron-circle-down"></em>
+                                                                                </a>
+                                                                                {{-- <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                                                                    <a href="{{route('partner.agent.manage', ['id' => $val->id])}}" class="dropdown-item">{{__('Manage Agent')}}</a>
+                                                                                    <a data-toggle="modal" data-target="#delete{{$val->id}}" href="" class="dropdown-item">{{__('Delete')}}</a>
+                                                                                </div> --}}
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>{{ $val->start_amount }}</td>
+                                                                        <td>{{ $val->end_amount }}</td>
+                                                                        <td>{{ $val->fee }}</td>
+                                                                        <td>{{ $val->currency }}</td>
+                                                                        <td>{{date("Y/m/d h:i:A", strtotime($val->created_at))}}</td>  
+                                                                        <td>{{date("Y/m/d h:i:A", strtotime($val->updated_at))}}</td>                   
+                                                                    </tr>
+                                                                    @endforeach               
+                                                                </tbody>                    
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    {{-- @foreach($agent as $k=>$val)
+                                                    <div class="modal fade" id="delete{{$val->id}}" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+                                                        <div class="modal-dialog modal- modal-dialog-centered modal-md" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body p-0">
+                                                                    <div class="card bg-white border-0 mb-0">
+                                                                        <div class="card-header">
+                                                                            <h3 class="mb-0">{{__('Are you sure you want to delete this?')}}</h3>
+                                                                        </div>
+                                                                        <div class="card-body px-lg-5 py-lg-5 text-right">
+                                                                            <button type="button" class="btn btn-neutral btn-sm" data-dismiss="modal">{{__('Close')}}</button>
+                                                                            <a  href="{{route('partner.agent.delete', ['id' => $val->id])}}" class="btn btn-danger btn-sm">{{__('Proceed')}}</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @endforeach  --}}
+                                                </div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div><!-- tab content -->
+                            </div><!-- container --> 
+                        </div>
+                        <!-- container --> 
+                    </div>                     
                     <div class="card">
                         <div class="card-header">
                             <h3 class="mb-0">{{__('Charges')}}</h3>
@@ -786,13 +1545,13 @@
                             <form action="{{route('admin.account.update')}}" method="post">
                                 @csrf
                                     <div class="form-group row">
-                                        <label class="col-form-label col-lg-2">{{__('Username')}}</label>
+                                        <label class="col-form-label ml-4">{{__('Username')}}</label> 
                                         <div class="col-lg-10">
                                             <input type="text" name="username" value="{{$val->username}}" class="form-control">
                                         </div>
                                     </div>                         
                                     <div class="form-group row">
-                                        <label class="col-form-label col-lg-2">{{__('Password')}}</label>
+                                        <label class="col-form-label ml-4">{{__('Password')}}</label>
                                         <div class="col-lg-10">
                                             <input type="password" name="password"  class="form-control" required>
                                         </div>

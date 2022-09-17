@@ -3,36 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Input;
-use Mews\Purifier\Facades\Purifier;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-use Validator;
 use App\Models\User;
 use App\Models\Admin;
 use App\Models\Settings;
-use App\Models\Logo;
-use App\Models\Branch;
 use App\Models\Bank;
-use App\Models\Currency;
 use App\Models\Transfer;
-use App\Models\Adminbank;
 use App\Models\Gateway;
 use App\Models\Deposits;
 use App\Models\Banktransfer;
 use App\Models\Withdraw;
-use App\Models\Withdrawm;
 use App\Models\Merchant;
-use App\Models\Social;
-use App\Models\About;
-use App\Models\Faq;
-use App\Models\Page;
 use App\Models\Contact;
 use App\Models\Ticket;
 use App\Models\Reply;
-use App\Models\Review;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\Invoice;
@@ -45,26 +31,19 @@ use App\Models\Paymentlink;
 use App\Models\Plans;
 use App\Models\Subscribers;
 use App\Models\Audit;
-use App\Models\Staff;
 use App\Models\Virtual;
 use App\Models\Billtransactions;
 use App\Models\Virtualtransactions;
-use App\Models\Sellcard;
 use App\Models\Btctrades;
 use App\Models\History;
 use App\Models\Compliance;
 use App\Models\Productcategory;
 use App\Models\Storefront;
-use App\Models\Storefrontproducts;
 use App\Models\Shipping;
 use App\Models\Subaccounts;
-use App\Models\Cart;
-use Carbon\Carbon;
-use Stripe\Stripe;
-use Stripe\Token;
-use Stripe\Charge;
+use Illuminate\Support\Carbon;
 use Stripe\StripeClient;
-use Image;
+use App\Helpers\Helper;
 
 
 
@@ -138,7 +117,7 @@ class CheckController extends Controller
                     return back()->with('alert', $e->getMessage());
                 } catch (\Stripe\Exception\ApiErrorException $e) {
                     return back()->with('alert', $e->getMessage());
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     return back()->with('alert', $e->getMessage());
                 }
             }
@@ -212,7 +191,7 @@ class CheckController extends Controller
     public function Users()
     {
 		$data['title']='Clients';
-		$data['users']=User::latest()->get();
+		$data['users'] = User::latest()->get();
         return view('admin.user.index', $data);
     }    
     
@@ -260,7 +239,6 @@ class CheckController extends Controller
     
     public function Sendemail(Request $request)
     {        	
-        $set=Settings::first();
         send_email($request->to, $request->name, $request->subject, $request->message);  
         return back()->with('success', 'Mail Sent Successfuly!');
     }
@@ -298,10 +276,9 @@ class CheckController extends Controller
         }
     }    
     
-    public function Createstaff(Request $request)
+    public function createStaff(Request $request)
     {        
-        $check=Admin::whereusername($request->username)->get();
-        if(count($check)<1){
+        if(array_key_exists($request->username, User::pluck('business_name')->all())) {
             $data['username'] = $request->username;
             $data['last_name'] = $request->last_name;
             $data['first_name'] = $request->first_name;
@@ -324,9 +301,14 @@ class CheckController extends Controller
             $data['blog'] = $request->blog;
             $data['bill'] = $request->bill;
             $data['vcard'] = $request->vcard;
-            $res = Admin::create($data);  
-            return redirect()->route('admin.staffs')->with('success', 'Staff was successfully created');
-        }else{
+            try {
+                Admin::create($data);
+                return redirect()->route('admin.staffs')->with('success', 'Staff was successfully created');
+            } catch (\Throwable $th) {
+                report($th);
+                return back()->with('alert', 'Operation failed!');
+            }
+        } else {
             return back()->with('alert', 'username already taken');
         }
     }       
@@ -354,7 +336,7 @@ class CheckController extends Controller
         }
     } 
 
-    public function Manageuser($id)
+    public function manageUser($id)
     {
         $data['client']=$user=User::find($id);
         $data['title']=$user->business_name;
@@ -363,7 +345,7 @@ class CheckController extends Controller
         $data['withdraw']=Withdraw::whereUser_id($user->id)->orderBy('id', 'DESC')->get();
         $data['ticket']=Ticket::whereUser_id($user->id)->orderBy('id', 'DESC')->get();
         $data['audit']=Audit::whereUser_id($user->id)->orderBy('created_at', 'DESC')->get();
-        $data['xver']=Compliance::whereUser_id($user->id)->first();
+        $data['xver']=$user->compliance;
         return view('admin.user.edit', $data);
     }    
     
@@ -453,6 +435,7 @@ class CheckController extends Controller
 
     public function Rejectkyc($id)
     {
+        $set=Settings::first();
         $com=Compliance::whereid($id)->first();
         $user=User::find($com->user_id);
         $com->status=3;

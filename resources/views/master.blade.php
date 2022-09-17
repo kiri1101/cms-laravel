@@ -134,6 +134,14 @@
               </div>
             </li> 
             @endif
+            @if ($admin->transaction==1)
+            <li class="nav-item">
+              <a class="nav-link @if(route('admin.transaction')==url()->current()) active @endif" href="{{route('admin.transaction')}}">
+                <i class="fad fa-exchange-alt"></i>
+                <span class="nav-link-text">{{__('Transactions')}}</span>
+              </a>
+            </li>
+            @endif
             <li class="nav-item">
               <a class="nav-link @if(route('admin.deposit.method')==url()->current()) active @endif" href="{{route('admin.deposit.method')}}">
                 <i class="fad fa-badge-percent"></i>

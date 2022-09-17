@@ -33,7 +33,7 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                         <a href="{{route('user.manage', ['id' => $val->id])}}" class="dropdown-item">{{__('Manage customer')}}</a>
-                                        <a href="{{route('admin.email', ['email' => $val->email, 'name' => $val->business_name])}}" class="dropdown-item">{{__('Send email')}}</a>
+                                        {{-- <a href="{{route('admin.email', ['email' => $val->email, 'name' => $val->business_name])}}" class="dropdown-item">{{__('Send email')}}</a> --}}
                                         @if($val->status==0)
                                             <a class='dropdown-item' href="{{route('user.block', ['id' => $val->id])}}">{{__('Block')}}</a>
                                         @else

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\faController;
@@ -20,6 +21,8 @@ use App\Http\Controllers\DepositController;
 use App\Http\Controllers\Localization;
 use App\Http\Controllers\User\ForgotPasswordController;
 use App\Http\Controllers\User\ResetPasswordController;
+use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\PartnerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -108,6 +111,8 @@ Route::get('login', [LoginController::class, 'login'])->name('login');
 Route::post('2fa', [faController::class, 'submitfa'])->name('submitfa');
 Route::get('2fa', [faController::class, 'faverify'])->name('2fa');
 Route::post('register', [RegisterController::class, 'submitregister'])->name('submitregister');
+Route::post('single-partner-register', [RegisterController::class, 'registerPartner'])->name('registerpartner');
+Route::post('cooperate-partner-register', [RegisterController::class, 'registerCopartner'])->name('registersinglepartner');
 Route::get('register', [RegisterController::class, 'register'])->name('register');
 Route::get('/forget', [UserController::class, 'forget'])->name('forget');
 Route::get('/r_pass', [UserController::class, 'r_pass'])->name('r_pass');
@@ -124,8 +129,8 @@ Route::group(['prefix' => 'user', ], function () {
             Route::post('compliance', [UserController::class, 'submitcompliance'])->name('submit.compliance');
             Route::post('country', [UserController::class, 'submitcountry'])->name('submit.country');
             Route::middleware(['Ban', 'Country', 'Blocked', 'CheckStatus', 'Tfa'])->group(function () {
-                Route::middleware(['Banks'])->group(function () {
-                    Route::middleware(['Kyc'])->group(function () {
+                // Route::middleware(['Banks'])->group(function () {
+                //     Route::middleware(['Kyc'])->group(function () {
                         Route::post('card', [UserController::class, 'card'])->name('card');
                         Route::get('stripe_card/{id}', [UserController::class, 'stripecard'])->name('stripe.card');
                         Route::post('flutter', [UserController::class, 'newflutter'])->name('flutter');
@@ -322,8 +327,8 @@ Route::group(['prefix' => 'user', ], function () {
                         Route::get('deposit-confirm', [PaymentController::class, 'depositConfirm'])->name('deposit.confirm');
                         Route::post('2fa', [UserController::class, 'submit2fa'])->name('change.2fa');
                         Route::get('audit', [UserController::class, 'audit'])->name('user.audit');
-                    });
-                });
+                //     });
+                // });
                 Route::post('add_bank', [UserController::class, 'Createbank'])->name('add.bank');
                 Route::get('no-bank', [UserController::class, 'nobank'])->name('user.nobank');
             });
@@ -341,6 +346,10 @@ Route::post('admin', [AdminController::class, 'submitadminlogin'])->name('admin.
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('/logout', [CheckController::class, 'logout'])->name('admin.logout');
     Route::get('/dashboard', [CheckController::class, 'dashboard'])->name('admin.dashboard');
+
+    //Transactions Controller
+    Route::get('/transactions', [TransactionsController::class, 'index'])->name('admin.transaction');
+
     //Blog controller
     Route::post('/createcategory', [PostController::class, 'CreateCategory']);
     Route::post('/updatecategory', [PostController::class, 'UpdateCategory']);
@@ -458,7 +467,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('settings', [SettingController::class, 'Settings'])->name('admin.setting');
     Route::post('settings', [SettingController::class, 'SettingsUpdate'])->name('admin.settings.update');      
     Route::post('charges', [SettingController::class, 'charges'])->name('admin.charges.update');      
-    Route::post('features', [SettingController::class, 'features'])->name('admin.features.update');      
+    Route::post('features', [SettingController::class, 'features'])->name('admin.features.update');
+    Route::post('commission', [SettingController::class, 'Commission'])->name('admin.commission.update');      
     Route::post('crypto', [SettingController::class, 'crypto'])->name('admin.crypto.update');      
     Route::post('account', [SettingController::class, 'AccountUpdate'])->name('admin.account.update');
     Route::get('charges', [TransferController::class, 'charges'])->name('admin.charges');
@@ -495,14 +505,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     //User controller
     Route::get('staff', [CheckController::class, 'Staffs'])->name('admin.staffs');  
     Route::get('new-staff', [CheckController::class, 'Newstaff'])->name('new.staff');  
-    Route::post('new-staff', [CheckController::class, 'Createstaff'])->name('create.staff');  
+    Route::post('new-staff', [CheckController::class, 'createStaff'])->name('create.staff');  
     Route::get('users', [CheckController::class, 'Users'])->name('admin.users');  
     Route::get('messages', [CheckController::class, 'Messages'])->name('admin.message');  
     Route::get('unblock-staff/{id}', [CheckController::class, 'Unblockstaff'])->name('staff.unblock');
     Route::get('block-staff/{id}', [CheckController::class, 'Blockstaff'])->name('staff.block');    
     Route::get('unblock-user/{id}', [CheckController::class, 'Unblockuser'])->name('user.unblock');
     Route::get('block-user/{id}', [CheckController::class, 'Blockuser'])->name('user.block');
-    Route::get('manage-user/{id}', [CheckController::class, 'Manageuser'])->name('user.manage');
+    Route::get('manage-user/{id}', [CheckController::class, 'manageUser'])->name('user.manage');
     Route::get('manage-staff/{id}', [CheckController::class, 'Managestaff'])->name('staff.manage');
     Route::get('user/delete/{id}', [CheckController::class, 'Destroyuser'])->name('user.delete');
     Route::get('staff/delete/{id}', [CheckController::class, 'Destroystaff'])->name('staff.delete');
@@ -539,4 +549,36 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     //Bill payment
     Route::get('bpay', [CheckController::class, 'bpay'])->name('admin.bpay');
+});
+
+Route::group(['prefix' => 'partner'], function() {
+    Route::middleware(['Partner', 'auth:user'])->group(function () {
+        //Partner Direct Routes
+        Route::get('dashboard', [PartnerController::class, 'dashboard'])->name('partner.dashboard');
+        Route::get('logout', [PartnerController::class, 'logout'])->name('partner.logout');
+
+        //Partner Branch Routes
+        Route::group(['prefix' => 'branch'], function () {
+            Route::get('dashboard', [PartnerController::class, 'branchDashboard'])->name('branch.dashboard');
+            Route::get('new', [PartnerController::class, 'Newbranch'])->name('partner.newbranch');
+            Route::post('store', [PartnerController::class, 'Createbranch'])->name('create.branch');
+            Route::get('manage/{id}', [PartnerController::class, 'Managebranch'])->name('partner.branch.manage');
+            Route::post('update', [PartnerController::class, 'Branchupdate'])->name('partner.branch.update');
+            Route::get('delete/{id}', [PartnerController::class, 'Destroybranch'])->name('partner.branch.delete');
+        });
+
+        //Partner Agent Routes
+        Route::group(['prefix' => 'agent'], function () {
+            Route::get('dashboard', [PartnerController::class, 'agentDashboard'])->name('agent.dashboard');
+            Route::get('new', [PartnerController::class, 'newAgent'])->name('partner.newagent');
+            Route::post('store', [PartnerController::class, 'createAgent'])->name('create.agent');
+            Route::get('manage/{id}', [PartnerController::class, 'manageAgent'])->name('partner.agent.manage');
+            Route::post('update', [PartnerController::class, 'agentUpdate'])->name('partner.agent.update');
+            Route::get('delete/{id}', [PartnerController::class, 'Destroyagent'])->name('partner.agent.delete');
+        });
+
+        Route::group(['prefix' => 'transaction'], function (){
+            Route::get('dashboard', [PartnerController::class, 'transactionDashboard'])->name('transaction.dashboard');
+        });
+    });      
 });

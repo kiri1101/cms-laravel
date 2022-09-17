@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\CentralLogics\Helpers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Hash;
 use Mews\Purifier\Facades\Purifier;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Validator;
 use App\Models\User;
 use App\Models\Settings;
 use App\Models\Admin;
 use App\Models\Etemplate;
+use App\Models\Fee;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class SettingController extends Controller
 {
@@ -23,6 +25,14 @@ class SettingController extends Controller
     {
         $data['title']='General settings';
         $data['val']=Admin::first();
+        $data['fee']=Fee::first();
+        $data['mobile_fee']=Fee::wheremobile_transfer('1')->get();
+        $data['deposit_fee']=Fee::wherepartner_deposit('1')->get();
+        $data['withdraw_fee']=Fee::wherepartner_withdraw('1')->get();
+        $data['monthly_fee']=Fee::wheremonth_saving('1')->get();
+        $data['three_months_fee']=Fee::wherethree_months_saving('1')->get();
+        $data['six_months_fee']=Fee::wheresix_months_saving('1')->get();
+        $data['currencys'] = Settings::first();
         return view('admin.settings.index', $data);
     }     
     
@@ -209,7 +219,63 @@ class SettingController extends Controller
         } else {
             return back()->with('alert', 'An error occured');
         }
-    }      
+    }
+
+    public function Commission(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'start_amount' => 'required|numeric|integer|min:1',
+            'end_amount' => 'required|numeric|integer|min:1',
+            'currency' => 'required|in:base,extra1,extra2,extra3,extra4,extra5',
+            'currency_end' => 'required|same:currency',
+            'fee'   => 'required|numeric|integer|min:1'
+        ]);
+        if ($validator->fails()) {
+            return back()->with('alert', 'Invalid input');
+        }
+
+        // Get currency code
+        $currencyCode = Helpers::currencyCode($request->currency);
+        $fee_exist = Helpers::currencyCheck($currencyCode, $request->start_amount, $request->end_amount);
+
+        // Check if fee already exist
+        if(isset($fee_exist)) {
+            return back()->with('warning', 'Fee already exist');
+        }
+
+        // Initiate fee transactions
+        DB::beginTransaction();
+        $data['mobileTransfer'] = $request->mobile_transfer;
+        $data['partner_deposit'] = $request->partner_deposit;
+        $data['partner_withdraw'] = $request->partner_withdraw;
+        $data['agent_deposit'] = $request->agent_deposit;
+        $data['agent_withdraw'] = $request->agent_withdraw;
+        $data['month_saving'] = $request->month_saving;
+        $data['three_months_saving'] = $request->three_months_saving;
+        $data['six_months_saving'] = $request->six_months_saving;
+        $data['personal_saving'] = $request->personal_saving;
+        $data['general_saving'] = $request->general_saving;
+
+        try {
+            $data['start_amount'] = $validator['start_amount'];
+            $data['end_amount'] = $validator['end_amount'];
+            $data['fee'] = $validator['fee'];
+            $data['currency'] = $validator['currency'];
+            $feeTransaction = Helpers::storeCommission($data);
+
+            //Redirect if transaction fails
+            if (! isset($feeTransaction)) {
+                DB::rollBack();
+                return back()->with('alert', 'Fee transaction has failed!');
+            }
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            report($th);
+            return back()->with('alert', 'Transaction Failed!');
+        }
+    }
     
     public function charges(Request $request)
     {

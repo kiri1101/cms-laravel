@@ -59,9 +59,9 @@
                             </div>                               
                             <div class="col-lg-4">
                                 <div class="custom-control custom-control-alternative custom-checkbox">
-                                    <input type="checkbox" name="message" id="customCheckLogin4"  class="custom-control-input" value="1">
+                                    <input type="checkbox" name="messages" id="customCheckLogin4"  class="custom-control-input" value="1">
                                     <label class="custom-control-label" for="customCheckLogin4">
-                                    <span class="text-muted">{{__('Message')}}</span>     
+                                        <span class="text-muted">{{__('Messages')}}</span>     
                                     </label>
                                 </div>                  
                             </div>                            
