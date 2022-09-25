@@ -26,8 +26,8 @@
 
               <select class="form-select form-control" id="registeruser" aria-label="Default select example">
                 <option selected>Choose An Account Type </option>
-                <option value="partnerregistration">Partner's Account</option>
-                <option value="userregistration">Cooperate Account</option>
+                <option value="partnerregistration">Partner Account</option>
+                <option value="userregistration">User Account</option>
               </select>
 
               <div class="modal fade" id="partnerModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -42,38 +42,27 @@
                     <div class="modal-body">
                       <select class="form-select form-control" id="partneruser" aria-label="Default select example">
                         <option selected>Choose An Account Type </option>
-                        <option value="singlepartner">Single Account</option>
-                        <option value="cooperatepartner">Cooperate Account</option>
+                        <option value="singlepartner">Agent Pro Account</option>
+                        <option value="cooperatepartner">Partner Account</option>
                       </select>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- Single Partner's Modal -->
+              <!-- Agent Modal -->
               <div class="modal fade" id="singlepartnerModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalCenterTitle">Single Partner's SignUp</h5>
+                      <h5 class="modal-title" id="exampleModalCenterTitle">Agent Pro SignUp</h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
                     <div class="modal-body">
-                      <form role="form" action="{{route('registersinglepartner')}}" method="post" aria-label="#">
+                      <form role="form" action="{{route('agent.register')}}" method="post" aria-label="#">
                         @csrf
-                        <div class="form-group mb-3">
-                          <div class="input-group">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text"><i class="fad fa-briefcase"></i></span>
-                            </div>
-                            <input class="form-control" placeholder="{{__('Username')}}" type="text" name="business_name" required>
-                          </div>
-                          @if ($errors->has('business_name'))
-                            <span class="text-xs text-uppercase text-danger">{{$errors->first('business_name')}}</span>
-                          @endif
-                        </div>
                         <div class="form-group row">
                           <div class="col-lg-12">
                             <div class="row">
@@ -158,30 +147,19 @@
                 </div>
               </div> 
               
-              <!-- Partner's Modal -->
+              <!-- Partner Modal -->
               <div class="modal fade" id="cooperatepartnerModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalCenterTitle">Cooperate Partner's SignUp</h5>
+                      <h5 class="modal-title" id="exampleModalCenterTitle">Partner SignUp</h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
                     <div class="modal-body">
-                      <form role="form" action="{{route('registerpartner')}}" method="post" aria-label="#">
+                      <form role="form" action="{{route('partner.register')}}" method="post" aria-label="#">
                         @csrf
-                        <div class="form-group mb-3">
-                          <div class="input-group">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text"><i class="fad fa-briefcase"></i></span>
-                            </div>
-                            <input class="form-control" placeholder="{{__('Username')}}" type="text" name="business_name" required>
-                          </div>
-                          @if ($errors->has('business_name'))
-                            <span class="text-xs text-uppercase text-danger">{{$errors->first('business_name')}}</span>
-                          @endif
-                        </div>
                         <div class="form-group row">
                           <div class="col-lg-12">
                             <div class="row">
@@ -266,7 +244,7 @@
                 </div>
               </div> 
 
-              <!-- Cooperate Modal -->
+              <!-- User Modal -->
               <div class="modal fade" id="usersModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
@@ -279,7 +257,7 @@
                     <div class="modal-body">
                       <form role="form" action="{{route('submitregister')}}" method="post" aria-label="#">
                         @csrf
-                        <div class="form-group mb-3">
+                        {{-- <div class="form-group mb-3">
                           <div class="input-group">
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fad fa-briefcase"></i></span>
@@ -289,7 +267,7 @@
                           @if ($errors->has('business_name'))
                             <span class="text-xs text-uppercase">{{$errors->first('business_name')}}</span>
                           @endif
-                        </div>
+                        </div> --}}
                         <div class="form-group row">
                           <div class="col-lg-12">
                             <div class="row">

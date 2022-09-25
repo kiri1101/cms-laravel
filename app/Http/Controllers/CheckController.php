@@ -369,8 +369,8 @@ class CheckController extends Controller
     {
         $data['ticket']=$ticket=Ticket::find($id);
         $data['title']='#'.$ticket->ticket_id;
-        $data['client']=User::whereId($ticket->user_id)->first();
-        $data['reply']=Reply::whereTicket_id($ticket->ticket_id)->get();
+        $data['client'] = User::find($ticket->user_id);
+        $data['reply'] = Reply::whereTicket_id($ticket->ticket_id)->get();
         return view('admin.user.edit-ticket', $data);
     }    
     

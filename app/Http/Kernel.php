@@ -71,5 +71,6 @@ class Kernel extends HttpKernel
         'Ban' => \App\Http\Middleware\Ban::class,
         'Country' => \App\Http\Middleware\Country::class,
         'Partner' => \App\Http\Middleware\IsPartner::class,
+        'AgentPro' => \App\Http\Middleware\AgentPro::class,
     ];
 }

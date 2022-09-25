@@ -1,28 +1,29 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\FrontendController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\faController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\AdminController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\CheckController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Localization;
 use App\Http\Controllers\WebController;
-use App\Http\Controllers\WithdrawController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AgentController;
+use App\Http\Controllers\CheckController;
 use App\Http\Controllers\TradeController;
+use App\Http\Controllers\Auth\faController;
+use App\Http\Controllers\DepositController;
+use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SettingController;
-use App\Http\Controllers\TransferController;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\MerchantController;
-use App\Http\Controllers\DepositController;
-use App\Http\Controllers\Localization;
-use App\Http\Controllers\User\ForgotPasswordController;
-use App\Http\Controllers\User\ResetPasswordController;
+use App\Http\Controllers\TransferController;
+use App\Http\Controllers\WithdrawController;
+use App\Http\Controllers\Auth\AdminController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\TransactionsController;
-use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\User\ResetPasswordController;
+use App\Http\Controllers\User\ForgotPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +37,7 @@ use App\Http\Controllers\PartnerController;
 */
 
 //Fund account IPN
-Route::get('lang/{locale}', [LocalizationController::class, 'index']);
+// Route::get('lang/{locale}', [LocalizationController::class, 'index']);
 Route::get('ipncoinpaybtc', [PaymentController::class, 'ipnCoinPayBtc'])->name('ipn.coinPay.btc');
 Route::get('ipncoinpayeth', [PaymentController::class, 'ipnCoinPayEth'])->name('ipn.coinPay.eth');
 Route::get('ipnflutter', [PaymentController::class, 'flutterIPN'])->name('ipn.flutter');
@@ -111,8 +112,8 @@ Route::get('login', [LoginController::class, 'login'])->name('login');
 Route::post('2fa', [faController::class, 'submitfa'])->name('submitfa');
 Route::get('2fa', [faController::class, 'faverify'])->name('2fa');
 Route::post('register', [RegisterController::class, 'submitregister'])->name('submitregister');
-Route::post('single-partner-register', [RegisterController::class, 'registerPartner'])->name('registerpartner');
-Route::post('cooperate-partner-register', [RegisterController::class, 'registerCopartner'])->name('registersinglepartner');
+Route::post('partner/register', [RegisterController::class, 'registerPartner'])->name('partner.register');
+Route::post('agent/register', [RegisterController::class, 'registerAgent'])->name('agent.register');
 Route::get('register', [RegisterController::class, 'register'])->name('register');
 Route::get('/forget', [UserController::class, 'forget'])->name('forget');
 Route::get('/r_pass', [UserController::class, 'r_pass'])->name('r_pass');
@@ -581,4 +582,30 @@ Route::group(['prefix' => 'partner'], function() {
             Route::get('dashboard', [PartnerController::class, 'transactionDashboard'])->name('transaction.dashboard');
         });
     });      
+});
+
+Route::prefix('agentpro')->group(function () {
+    Route::middleware(['AgentPro','auth:user'])->group(function () {
+        Route::get('dashboard', [AgentController::class, 'dashboard'])->name('agentpro.dashboard');
+        // Route::get('logout', [AgentController::class, 'logout'])->name('agentpro.logout');
+
+        // Route::prefix('transfer')->group(function () {
+        //     Route::get('dashboard', [AgentController::class, 'transferDashboard'])->name('independent.transfer.dashboard');
+        //     Route::post('deposit-money-transfer', [AgentController::class, 'DepositMoney'])->name('independent.transfer.deposit');
+        //     Route::post('withdraw-money-transfer', [AgentController::class, 'WithdrawMoney'])->name('independent.transfer.withdraw');
+        // });
+
+        // Route::prefix('mobile')->group(function () {
+        //     Route::get('dashboard', [AgentController::class, 'mobileDashboard'])->name('independent.mobile.dashboard');
+        //     Route::post('mobile-transfer', [AgentController::class, 'Transfermoney'])->name('independent.mobile.transfer');
+        // });
+
+        // Route::prefix('saving')->group(function () {
+        //     Route::get('dashboard', [AgentController::class, 'savingDashboard'])->name('independent.saving.dashboard');
+        //     Route::post('payment/{id}', [AgentController::class, 'savingPayment'])->name('independent.saving.payment');
+        // });
+        // Route::prefix('transaction')->group(function () {
+        //     Route::get('dashboard', [AgentController::class, 'transactionDashboard'])->name('independent.transaction.dashboard');
+        // });
+    });
 });

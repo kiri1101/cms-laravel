@@ -15,7 +15,7 @@
                         <th>{{__('Name')}}</th>
                         <th>{{__('Mobile')}}</th>
                         <th>{{__('Email')}}</th>                                                                      
-                        <th>{{__('Message')}}</th>                                                                      
+                        <th>{{__('Messages')}}</th>                                                                      
                         <th>{{__('Created')}}</th>
                         <th>{{__('Updated')}}</th>
                         <th class="scope"></th>    

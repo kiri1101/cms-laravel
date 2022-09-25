@@ -2,69 +2,69 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Str;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Validator;
-use Stripe\Stripe;
-use Stripe\Token;
-use Stripe\Charge;
-use Stripe\StripeClient;
-use App\Models\User;
-use App\Models\Settings;
-use App\Models\Logo;
-use App\Models\Bank;
-use App\Models\Currency;
-use App\Models\Transfer;
-use App\Models\Adminbank;
-use App\Models\Gateway;
-use App\Models\Deposits;
-use App\Models\Banktransfer;
-use App\Models\Withdraw;
-use App\Models\Exttransfer;
-use App\Models\Merchant;
-use App\Models\Ticket;
-use App\Models\Reply;
-use App\Models\Invoice;
-use App\Models\Product;
-use App\Models\Productimage;
-use App\Models\Order;
-use App\Models\Audit;
-use App\Models\Requests;
-use App\Models\Paymentlink;
-use App\Models\Transactions;
-use App\Models\Charges;
-use App\Models\Donations;
-use App\Models\Plans;
-use App\Models\Subscribers;
-use App\Models\Virtual;
-use App\Models\Billtransactions;
-use App\Models\Virtualtransactions;
-use App\Models\Btctrades;
-use App\Models\History;
-use App\Models\Subaccounts;
-use App\Models\Banksupported;
-use App\Models\Countrysupported;
-use App\Models\Country;
-use App\Models\Productcategory;
-use App\Models\Storefront;
-use App\Models\Storefrontproducts;
-use App\Models\Shipping;
-use App\Models\Cart;
-use App\Models\Compliance;
-use Carbon\Carbon;
-use Session;
 use Image;
 use Redirect;
-use App\Lib\CoinPaymentHosted;
-use Laravel\Flutterwave\Card;
-use Laravel\Flutterwave\Bill;
-use Laravel\Flutterwave\VirtualCard;
+use Stripe\Token;
+use Carbon\Carbon;
+use Stripe\Charge;
+use Stripe\Stripe;
+use App\Models\Bank;
+use App\Models\Cart;
+use App\Models\Logo;
+use App\Models\User;
 use Omnipay\Omnipay;
+use App\Models\Audit;
+use App\Models\Order;
+use App\Models\Plans;
+use App\Models\Reply;
+use App\Models\Ticket;
+use App\Models\Charges;
+use App\Models\Country;
+use App\Models\Gateway;
+use App\Models\History;
+use App\Models\Invoice;
+use App\Models\Product;
+use App\Models\Virtual;
+use App\Models\Currency;
+use App\Models\Deposits;
+use App\Models\Merchant;
+use App\Models\Requests;
+use App\Models\Settings;
+use App\Models\Shipping;
+use App\Models\Transfer;
+use App\Models\Withdraw;
+use Stripe\StripeClient;
+use App\Models\Adminbank;
+use App\Models\Btctrades;
+use App\Models\Donations;
+use App\Models\Compliance;
+use App\Models\Storefront;
+use App\Models\Exttransfer;
+use App\Models\Paymentlink;
+use App\Models\Subaccounts;
+use App\Models\Subscribers;
+use Illuminate\Support\Str;
+use App\Models\Banktransfer;
+use App\Models\Productimage;
+use App\Models\Transactions;
+use Illuminate\Http\Request;
+use App\Models\Banksupported;
+use Laravel\Flutterwave\Bill;
+use Laravel\Flutterwave\Card;
+use App\Lib\CoinPaymentHosted;
+use App\Models\Productcategory;
+use App\Models\Billtransactions;
+use App\Models\Countrysupported;
+use App\Models\Storefrontproducts;
+use App\Models\Virtualtransactions;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Flutterwave\VirtualCard;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 
 
@@ -1086,22 +1086,22 @@ class UserController extends Controller
         } 
         public function submitticket(Request $request)
         {      
-            if($request->hasfile('image')){
-                $validator=Validator::make($request->all(), [
-                    'image.*' => 'mimes:doc,pdf,docx,zip,png,jpeg'
-                ]);
-                if ($validator->fails()) {
-                    return redirect()->route('transfererror')->withErrors($validator)->withInput();
-                }else{
-                    foreach($request->file('image') as $file){
-                        $token=str_random(10);
-                        $name = 'support_'.$token.'.'.$file->extension();
-                        $file->move('asset/profile/', $name);
-                        $data[] = $name;  
-                        $sav['files'] = json_encode($data);
-                    }
+            $validator = Validator::make($request->all(), [
+                'image.*' => 'mimes:doc,pdf,docx,zip,png,jpeg'
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->route('transfererror')->withErrors($validator)->withInput();
+            }else{
+                foreach($request->file('image') as $file){
+                    $token=str_random(10);
+                    $name = 'support_'.$token.'.'.$file->extension();
+                    $file->move('asset/profile/', $name);
+                    $data[] = $name;  
+                    $sav['files'] = json_encode($data);
                 }
             }
+            
             $set=Settings::first();
             $user=$data['user']=User::find(Auth::guard('user')->user()->id);
             $sav['user_id']=Auth::guard('user')->user()->id;
