@@ -165,6 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Monarobase\CountryList\CountryListServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -228,6 +229,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Input' => Illuminate\Support\Facades\Request::class,
+        'Countries' => Monarobase\CountryList\CountryListFacade::class,
 
     ],
 

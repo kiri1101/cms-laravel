@@ -63,6 +63,7 @@ class RegisterController extends Controller
     {
         $data['title']='Register';
         $data['country']=Countrysupported::wherestatus(1)->get();
+        $data['settings'] = Settings::first();
         return view('auth.register', $data);
     }    
 
@@ -75,6 +76,7 @@ class RegisterController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'phone' => 'required|numeric|unique:users',
             'password' => 'required|string|min:6',
+            'currency' => 'required|in:base,extra1,extra2,extra3,extra4,extra5',
         ]);
 
         $validator->sometimes('g-recaptcha-response', 'required|captcha', function ($set) {
@@ -149,6 +151,7 @@ class RegisterController extends Controller
                 $user->public_key='PUB-'.str_random(32);        
                 $user->secret_key='SEC-'.str_random(32); 
                 $user->last_login=Carbon::now();
+                $user->default_currency=Settings::first()->currencyCode($request->currency);
                 $user->save();
 
             } catch (\Stripe\Exception\RateLimitException $e) {
@@ -182,6 +185,7 @@ class RegisterController extends Controller
             $user->public_key='PUB-'.str_random(32);        
             $user->secret_key='SEC-'.str_random(32); 
             $user->last_login = now();
+            $user->default_currency=Settings::first()->currencyCode($request->currency);
             $user->save();
         }
 

@@ -308,8 +308,84 @@
             
           </ul>
             <ul class="navbar-nav align-items-center ml-auto ml-md-0">    
-              <li class="nav-item mr-2">
-                <h6 class="h4 mb-0 text-gray font-weight-bolder"><span class="text-primary"><i class="fad fa-wallet"></i>  {{number_format($user->balance, 2, '.', '').$currency->name}}</span></h6>
+              <li class="nav-item mr-2 dropdown">
+                <a class="nav-link pr-0" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;">
+                  <h6 class="h4 mb-0 text-gray font-weight-bolder">
+                    <span class="text-primary">
+                      <i class="fad fa-wallet"></i>  
+                      @switch($user->default_currency)
+                          @case(\App\Models\Settings::first()->extra1_code)
+                              {{number_format($user->debit_extra1, 2, '.', '').\App\Models\Settings::first()->extra1_code}}
+                              @break
+                          @case(\App\Models\Settings::first()->extra2_code)
+                              {{number_format($user->debit_extra2, 2, '.', '').\App\Models\Settings::first()->extra2_code}}
+                              @break
+                          @case(\App\Models\Settings::first()->extra3_code)
+                              {{number_format($user->debit_extra3, 2, '.', '').\App\Models\Settings::first()->extra3_code}}
+                              @break
+                          @case(\App\Models\Settings::first()->extra4_code)
+                              {{number_format($user->debit_extra4, 2, '.', '').\App\Models\Settings::first()->extra4_code}}
+                              @break
+                          @case(\App\Models\Settings::first()->extra5_code)
+                              {{number_format($user->debit_extra5, 2, '.', '').\App\Models\Settings::first()->extra5_code}}
+                              @break
+                          @default
+                              {{number_format($user->balance, 2, '.', '').\App\Models\Settings::first()->base_code}}
+                              @break
+                      @endswitch  
+                    </span>                        
+                  </h6>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                  @if ($user->default_currency != \App\Models\Settings::first()->base_code)
+                    <div class="dropdown-item">
+                      <span class="text-primary">
+                        <i class="fad fa-wallet"></i>
+                        {{number_format($user->balance, 2, '.', '').\App\Models\Settings::first()->base_code}}
+                      </span>
+                    </div>                       
+                  @endif
+                  @if ($user->default_currency != \App\Models\Settings::first()->extra1_code)
+                    <div class="dropdown-item">
+                      <span class="text-primary">
+                        <i class="fad fa-wallet"></i>
+                        {{number_format($user->debit_extra1, 2, '.', '').\App\Models\Settings::first()->extra1_code}}
+                      </span>
+                    </div>                      
+                  @endif
+                  @if ($user->default_currency != \App\Models\Settings::first()->extra2_code)
+                    <div class="dropdown-item">
+                      <span class="text-primary">
+                        <i class="fad fa-wallet"></i>
+                        {{number_format($user->debit_extra2, 2, '.', '').\App\Models\Settings::first()->extra2_code}}
+                      </span>
+                    </div>                       
+                  @endif
+                  @if ($user->default_currency != \App\Models\Settings::first()->extra3_code)
+                    <div class="dropdown-item">
+                      <span class="text-primary">
+                        <i class="fad fa-wallet"></i>
+                        {{number_format($user->debit_extra3, 2, '.', '').\App\Models\Settings::first()->extra3_code}}
+                      </span>
+                    </div>       
+                  @endif
+                  @if ($user->default_currency != \App\Models\Settings::first()->extra4_code)
+                    <div class="dropdown-item">
+                      <span class="text-primary">
+                        <i class="fad fa-wallet"></i>
+                        {{number_format($user->debit_extra4, 2, '.', '').\App\Models\Settings::first()->extra4_code}}
+                      </span>
+                    </div>    
+                  @endif               
+                  @if ($user->default_currency != \App\Models\Settings::first()->extra5_code)
+                    <div class="dropdown-item">
+                      <span class="text-primary">
+                        <i class="fad fa-wallet"></i>
+                        {{number_format($user->debit_extra5, 2, '.', '').\App\Models\Settings::first()->extra5_code}}
+                      </span>
+                    </div>
+                  @endif
+                </div>
               </li>              
               <li class="nav-item dropdown">
                 <a class="nav-link pr-0" aria-haspopup="true" aria-expanded="fadse">
@@ -323,7 +399,7 @@
             </ul>
             <ul class="navbar-nav">
               <li class="nav-item dropdown">
-                <a class="nav-link pr-0" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="fadse">
+                <a class="nav-link pr-0" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fad fa-chevron-circle-down fa-lg text-dark"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">

@@ -21,6 +21,7 @@
         "laravel/ui": "^3.2",
         "league/omnipay": "^3.1",
         "mews/purifier": "^3.3",
+        "monarobase/country-list": "^3.3",
         "omnipay/stripe": "^3.1",
         "php-curl-class/php-curl-class": "^9.1",
         "sonata-project/google-authenticator": "^2.3",

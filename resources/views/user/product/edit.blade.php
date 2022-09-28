@@ -146,7 +146,7 @@
                 <div class="col-lg-7">
                   <div class="input-group">
                     <div class="input-group-prepend">
-                      <span class="input-group-text">{{$currency->symbol}}</span>
+                      <span class="input-group-text">{{$product->currency}}</span>
                     </div>
                     <input type="number" step="any" name="amount" value="{{$product->amount}}" maxlength="10" class="form-control" required="">
                   </div>

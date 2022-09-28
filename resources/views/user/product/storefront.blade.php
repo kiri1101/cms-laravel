@@ -423,13 +423,21 @@
                             <div class="form-group row">
                                 <div class="col-lg-12">
                                     <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-text">{{$currency->symbol}}</span>
-                                    </span>
-                                    <input type="number" class="form-control" name="amount" placeholder="0.00" required>
-                                    <span class="input-group-append">
-                                        <span class="input-group-text">.00</span>
-                                    </span>
+                                        <span class="input-group-prepend mr-2 col-lg-6">
+                                            <select class="form-control" name="currency" required>
+                                                <option value="">{{__('Select Currency')}}</option> 
+                                                <option value="base">{{ \App\Models\Settings::first()->base_code }}</option>
+                                                <option value="extra1">{{ \App\Models\Settings::first()->extra1_code }}</option>
+                                                <option value="extra2">{{ \App\Models\Settings::first()->extra2_code }}</option>
+                                                <option value="extra3">{{ \App\Models\Settings::first()->extra3_code }}</option>
+                                                <option value="extra4">{{ \App\Models\Settings::first()->extra4_code }}</option>
+                                                <option value="extra5">{{ \App\Models\Settings::first()->extra5_code }}</option>
+                                            </select>
+                                        </span>
+                                        <input type="number" class="form-control" name="amount" placeholder="0.00" required>
+                                        <span class="input-group-append">
+                                            <span class="input-group-text">.00</span>
+                                        </span>
                                     </div>
                                 </div>
                             </div>                                
@@ -536,13 +544,21 @@
                             </div>       
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-12">{{__('Amount')}}</label>
-                                <div class="col-lg-12">
-                                <div class="input-group input-group-merge">
-                                    <div class="input-group-prepend">
-                                    <span class="input-group-text">{{$currency->symbol}}</span>
-                                    </div>
-                                    <input type="number" step="any" name="amount" maxlength="10" class="form-control" required>
+                                <div class="col-lg-6">                                
+                                    <select class="form-control input-group-prepend" name="currency" required>
+                                        <option value="">{{__('Select Currency')}}</option> 
+                                        <option value="base">{{ \App\Models\Settings::first()->base_code }}</option>
+                                        <option value="extra1">{{ \App\Models\Settings::first()->extra1_code }}</option>
+                                        <option value="extra2">{{ \App\Models\Settings::first()->extra2_code }}</option>
+                                        <option value="extra3">{{ \App\Models\Settings::first()->extra3_code }}</option>
+                                        <option value="extra4">{{ \App\Models\Settings::first()->extra4_code }}</option>
+                                        <option value="extra5">{{ \App\Models\Settings::first()->extra5_code }}</option>
+                                    </select>
                                 </div>
+                                <div class="col-lg-6">
+                                    <div class="input-group input-group-merge">                          
+                                        <input type="number" step="any" name="amount" maxlength="10" class="form-control" placeholder="Provide Amount" required>
+                                    </div>
                                 </div>
                             </div>  
                             <div class="form-group row">

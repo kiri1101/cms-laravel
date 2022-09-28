@@ -35,10 +35,19 @@
                     <label class="col-form-label col-lg-12">{{__('Amount')}}</label>
                     <div class="col-lg-12">
                       <div class="input-group">
-                        <span class="input-group-prepend">
-                          <span class="input-group-text">{{$currency->symbol}}</span>
+                        <span class="input-group-prepend mr-2">
+                            {{-- <span class="input-group-text">{{$currency->symbol}}</span> --}}
+                            <select class="form-control" name="currency" required>
+                              <option value="">{{__('Select Currency')}}</option> 
+                              <option value="base">{{ \App\Models\Settings::first()->base_code }}</option>
+                              <option value="extra1">{{ \App\Models\Settings::first()->extra1_code }}</option>
+                              <option value="extra2">{{ \App\Models\Settings::first()->extra2_code }}</option>
+                              <option value="extra3">{{ \App\Models\Settings::first()->extra3_code }}</option>
+                              <option value="extra4">{{ \App\Models\Settings::first()->extra4_code }}</option>
+                              <option value="extra5">{{ \App\Models\Settings::first()->extra5_code }}</option>
+                          </select>
                         </span>
-                        <input type="number" step="any" class="form-control" name="amount" id="amounttransfer" min="{{$set->min_transfer}}"  onkeyup="transfercharge()" required>
+                        <input type="number" step="any" class="form-control" name="amount" id="amounttransfer" min="{{$set->min_transfer}}"  onkeyup="transfercharge()" placeholder="Provide amount" required>
                         <input type="hidden" value="{{$set->transfer_charge}}" id="chargetransfer">
                       </div>
                     </div>

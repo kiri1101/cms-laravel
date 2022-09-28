@@ -320,14 +320,29 @@
                         </div>
                         <div class="form-group row">
                           <div class="col-lg-12">
-                            <select class="form-control select" name="country" required>
-                                <option value="">{{__('Select Country')}}</option> 
-                                  @foreach($country as $val)
-                                    <option value="{{$val->country_id}}">{{$val->real['nicename']}}</option>
-                                  @endforeach
-                            </select>
+                            <div class="row">
+                              <div class="col-lg-6">
+                                <select class="form-control select" name="country" required>
+                                    <option value="">{{__('Select Country')}}</option> 
+                                      @foreach($country as $val)
+                                        <option value="{{$val->country_id}}">{{$val->real['nicename']}}</option>
+                                      @endforeach
+                                </select>
+                              </div>
+                              <div class="col-lg-6">
+                                <select class="form-control select" name="currency" required>
+                                    <option value="">{{__('Select Currency')}}</option> 
+                                    <option value="base">{{ $settings->base_code }}</option>
+                                    <option value="extra1">{{ $settings->extra1_code }}</option>
+                                    <option value="extra2">{{ $settings->extra2_code }}</option>
+                                    <option value="extra3">{{ $settings->extra3_code }}</option>
+                                    <option value="extra4">{{ $settings->extra4_code }}</option>
+                                    <option value="extra5">{{ $settings->extra5_code }}</option>
+                                </select>
+                              </div>
+                            </div>
                           </div>
-                        </div>                                              
+                        </div>                                                
                         <div class="form-group">
                           <div class="input-group">
                             <div class="input-group-prepend">

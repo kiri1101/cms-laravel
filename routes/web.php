@@ -24,6 +24,7 @@ use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\User\ResetPasswordController;
 use App\Http\Controllers\User\ForgotPasswordController;
+use Monarobase\CountryList\CountryListFacade as Countries;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,9 @@ use App\Http\Controllers\User\ForgotPasswordController;
 
 //Fund account IPN
 // Route::get('lang/{locale}', [LocalizationController::class, 'index']);
+// Route::get('/testing', function () {
+//     return Countries::getList();
+// });
 Route::get('ipncoinpaybtc', [PaymentController::class, 'ipnCoinPayBtc'])->name('ipn.coinPay.btc');
 Route::get('ipncoinpayeth', [PaymentController::class, 'ipnCoinPayEth'])->name('ipn.coinPay.eth');
 Route::get('ipnflutter', [PaymentController::class, 'flutterIPN'])->name('ipn.flutter');

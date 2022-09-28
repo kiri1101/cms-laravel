@@ -1195,6 +1195,7 @@ class UserController extends Controller
             $sav['user_id']=Auth::guard('user')->user()->id;
             $sav['region']=$request->region;
             $sav['amount']=$request->amount;
+            $sav['currency']=Settings::first()->currencyCode($request->currency);
             Shipping::create($sav);
             return redirect()->route('user.shipping')->with('success', 'Shipping fee succesfully created');
         }        
@@ -1305,6 +1306,7 @@ class UserController extends Controller
             $sav['quantity']=$request->quantity;
             $sav['cat_id']=$request->category;
             $sav['amount']=$request->amount;
+            $sav['currency']=Settings::first()->currencyCode($request->currency);
             $sav['shipping_status']=$request->shipping_status;
             $sav['new']=1;
             Product::create($sav);
@@ -1320,6 +1322,7 @@ class UserController extends Controller
             }
             return redirect()->route('edit.product', ['id' => $trx]);
         }        
+
         public function submitcategory(Request $request)
         {
             $sav['user_id']=Auth::guard('user')->user()->id;
@@ -3510,7 +3513,7 @@ class UserController extends Controller
                         return back()->with('alert', $e->getMessage());
                     } catch (\Stripe\Exception\ApiErrorException $e) {
                         return back()->with('alert', $e->getMessage());
-                    } catch (Exception $e) {
+                    } catch (\Exception $e) {
                         return back()->with('alert', $e->getMessage());
                     }
                 }
@@ -3591,7 +3594,9 @@ class UserController extends Controller
                                 $sav['charge']=($request->amount*$set->transfer_charge/100+($set->transfer_chargep));
                                 $sav['sender_id']=Auth::guard('user')->user()->id;
                                 $sav['receiver_id']=$trans->id;        
-                                $sav['status']=1;   
+                                $sav['status']=1;
+                                $sav['from_currency']=Settings::first()->currencyCode($request->currency);
+                                $sav['to_currency']=Settings::first()->currencyCode($request->currency);
                                 Transfer::create($sav);   
                                 $audit['user_id']=Auth::guard('user')->user()->id;
                                 $audit['trx']=$token;
@@ -3604,18 +3609,21 @@ class UserController extends Controller
                                 $charge['ref_id']=$token;
                                 $charge['amount']=$request->amount*$set->transfer_charge/100+($set->transfer_chargep);
                                 $charge['log']='Charges for transfer #' .$token;
+                                $charge['currency']=Settings::first()->currencyCode($request->currency);
                                 Charges::create($charge);
                                 $his['user_id']=$user->id;
                                 $his['amount']=$request->amount+($request->amount*$set->transfer_charge/100+($set->transfer_chargep));
                                 $his['ref']=$token;
                                 $his['main']=1;
                                 $his['type']=2;
+                                $his['currency']=Settings::first()->currencyCode($request->currency);
                                 History::create($his);                                
                                 $his['user_id']=$trans->id;
                                 $his['amount']=$request->amount;
                                 $his['ref']=$token;
                                 $his['main']=1;
                                 $his['type']=1;
+                                $his['currency']=Settings::first()->currencyCode($request->currency);
                                 History::create($his);
                                 if($set->email_notify==1){
                                     send_transferreceipt($token);
@@ -3633,6 +3641,8 @@ class UserController extends Controller
                                 $sav['sender_id']=Auth::guard('user')->user()->id;  
                                 $sav['temp']=$request->email;  
                                 $sav['status']=0; 
+                                $sav['from_currency']=Settings::first()->currencyCode($request->currency);
+                                $sav['to_currency']=Settings::first()->currencyCode($request->currency);
                                 Transfer::create($sav); 
                                 $audit['user_id']=Auth::guard('user')->user()->id;
                                 $audit['trx']=$token;
@@ -3645,12 +3655,14 @@ class UserController extends Controller
                                 $charge['ref_id']=$token;
                                 $charge['amount']=$request->amount*$set->transfer_charge/100+($set->transfer_chargep);
                                 $charge['log']='Charges for transfer #' .$token;
+                                $charge['currency']=Settings::first()->currencyCode($request->currency);
                                 Charges::create($charge);
                                 $his['user_id']=$user->id;
                                 $his['amount']=$request->amount+($request->amount*$set->transfer_charge/100+($set->transfer_chargep));
                                 $his['ref']=$token;
                                 $his['main']=1;
                                 $his['type']=2;
+                                $his['currency']=Settings::first()->currencyCode($request->currency);
                                 History::create($his);
                                 if($set->email_notify==1){
                                     send_ntransferreceipt($token);
